@@ -1,2 +1,2 @@
 * linguist-detectable=false 
-*.rs linguist-detectable=true 
+*.re linguist-detectable=true 

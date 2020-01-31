@@ -10,7 +10,7 @@ path = "server/src/main.rs"
 
 [lib]
 name = "foo"
-path = "server/src/lib.rs"
+path = "server/src/main.rs"
 
 [dependencies]
 reqwest = { version = "0.10", features = ["json"] }

@@ -54,6 +54,7 @@ lang/
 *.bs.js
 .bsb.lock
 npm-debug.log
+/lib/*
 /lib/bs/
 /node_modules/
 .vscode

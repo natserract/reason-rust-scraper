@@ -30,7 +30,7 @@ fn enable_cors() -> Cors {
 }
 
 // -> Launch App Routes
-pub fn connect_db() -> rocket::Rocket {
+pub fn onfire() -> rocket::Rocket {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
     let pool = init_pool(database_url);
@@ -40,7 +40,7 @@ pub fn connect_db() -> rocket::Rocket {
         .mount(
             "/",
             routes![
-                users::view_all_users,
+                scrap_routes::view_all_scraps
             ],
         )
         .attach(enable_cors())

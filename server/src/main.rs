@@ -13,7 +13,8 @@ mod pool;
 mod hooks;
 mod models;
 mod database;
+mod schema;
 
 fn main() {
-   pool::connect_db().launch();
+   pool::onfire().launch();
 }

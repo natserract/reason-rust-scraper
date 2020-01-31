@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <title>Rust + ReasonML</title>
+</head>
+<body>
+  <script>
+    window.process = {
+      env: {
+        NODE_ENV: 'development'
+      }
+    };
+  </script>
+  <div id="__reason"></div>
+
+  <!-- This is https://github.com/marijnh/moduleserve, the secret sauce that allows us not need to bundle things during development, and have instantaneous iteration feedback, without any hot-reloading or extra build pipeline needed. -->
+  <script src="/moduleserve/load.js" data-module="./client/src/Index.bs.js"></script>
+  <!-- Our little watcher. Super clean. Check it out! -->
+  <script src="./watcher.js"></script>
+</body>
+</html>

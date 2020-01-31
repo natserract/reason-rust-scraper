@@ -1,21 +1,21 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "reason-react-examples",
+  "reason": {
+    "react-jsx": 3
+  },
   "sources": {
-    "dir" : "src",
+    "dir" : "client/src/",
     "subdirs" : true
   },
-  "package-specs": {
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "package-specs": [{
     "module": "commonjs",
     "in-source": true
-  },
+  }],
   "suffix": ".bs.js",
-  "bs-dependencies": [
-
-  ],
-  "warnings": {
-    "error" : "+101"
-  },
   "namespace": true,
+  "bs-dependencies": [
+    "reason-react"
+  ],
   "refmt": 3
 }

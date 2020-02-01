@@ -9,7 +9,7 @@ name = "index"
 path = "server/src/main.rs"
 
 [lib]
-name = "foo"
+name = "rustreason"
 path = "server/src/main.rs"
 
 [dependencies]

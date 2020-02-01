@@ -40,7 +40,8 @@ pub fn onfire() -> rocket::Rocket {
         .mount(
             "/",
             routes![
-                scrap_routes::view_all_scraps
+                scrap_routes::view_all_scraps,
+                scrap_routes::create_scrap_post
             ],
         )
         .attach(enable_cors())

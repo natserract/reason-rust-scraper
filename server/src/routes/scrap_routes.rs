@@ -16,7 +16,7 @@ use database::scrap_db as action;
 pub fn view_all_scraps(connection: pool::Connection) -> JsonValue {
     let result = action::query_view_scraps_data(&connection);
     json!({
-        "data": result
+        "result": result
     })
 }
 

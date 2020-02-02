@@ -17,7 +17,9 @@
   "bs-dependencies": [
     "reason-react",
     "bs-fetch",
-    "bs-css"
+    "bs-css",
+    "@glennsl/bs-json",
+    "bs-axios"
   ],
   "refmt": 3
 }

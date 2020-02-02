@@ -1,7 +1,8 @@
 
 type routes = 
   |  Details
-  |  Home;
+  |  Home
+  |  NotFound;
 
 let useRoute = () => {
     let url = ReasonReactRouter.useUrl();
@@ -9,6 +10,7 @@ let useRoute = () => {
 
     switch (hash) {
       | [| "", "detail", "" |] => Details
-      | _ => Home
+      | [|""|] => Home
+      | _ => NotFound
     };
 }

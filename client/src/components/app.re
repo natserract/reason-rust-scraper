@@ -11,8 +11,9 @@ let make = () => {
 
     <Fragment>
         ( switch (route) {
-            | Details => <Form />
-            | _ => <Home/>
+            | Details => <Details />
+            | Home => <Home/>
+            | _ => <NotFound/>
         })
     </Fragment>
 };

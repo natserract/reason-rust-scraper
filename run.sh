@@ -1,5 +1,5 @@
-# sudo chmod +x ./run.sh
-# ./run.sh
+
+#!/bin/bash
 
 tab_name="$1"
 shift

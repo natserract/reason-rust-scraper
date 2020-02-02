@@ -3,3 +3,4 @@ ReactDOMRe.renderToElementWithId(
     "__reason"
 );
 
+ReasonReactRouter.push("");

@@ -3,6 +3,6 @@ open Utils;
 [@react.component]
 let make = () => {
     <div>
-        (str("Ini Details"))
+        (str("Notfound"))
     </div>
-};
+}

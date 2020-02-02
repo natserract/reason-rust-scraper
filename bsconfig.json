@@ -19,7 +19,7 @@
     "bs-fetch",
     "bs-css",
     "@glennsl/bs-json",
-    "bs-axios"
+    "re-formality"
   ],
   "refmt": 3
 }

@@ -23,6 +23,12 @@ pub fn query_view_scraps_data(connection: &MysqlConnection) -> Vec<Scraps> {
         .unwrap()
 }
 
+#[tokio::main]
+async fn scrapper(site_name: &str) -> Result<String, reqwest::Error> {
+    let scrap = reqwest::get(site_name).await?;
+    let body = scrap.text().await?;
+    Ok(String::from(body))
+}
 
 pub fn query_create_scrap_post(
     connection: &MysqlConnection,
@@ -30,10 +36,17 @@ pub fn query_create_scrap_post(
     description: &str,
 ) -> Scraps {
     let created_at = Some(Local::now().naive_local());
+   let body_response = scrapper(site_name);
+
+   let x = match body_response {
+       Ok(e) => e,
+       Err(_) => String::from("Error")
+   };
+
     let new_scrap_post = &NewScraps {
         site_name,
         description,
-        body: "Body",
+        body: &x,
         headers: "Headers",
         created_at: created_at,
         updated_at: None,

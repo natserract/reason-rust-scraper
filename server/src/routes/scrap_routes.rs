@@ -26,9 +26,11 @@ pub fn create_scrap_post(scrap_data: Json<NewScraps>, connection: pool::Connecti
     let field_site_name = new_scrap_post.site_name;
     let field_description = new_scrap_post.description;
 
-    Json(action::query_create_scrap_post(
-        &connection,
-        field_site_name,
-        field_description,
-    ))
+    Json(
+        action::query_create_scrap_post(
+            &connection,
+            field_site_name,
+            field_description,
+        )
+    )
 }

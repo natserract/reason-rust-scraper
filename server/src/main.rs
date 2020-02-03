@@ -6,7 +6,8 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate diesel;
-#[macro_use] extern crate chrono;
+extern crate chrono;
+extern crate reqwest;
 
 mod routes;
 mod pool;

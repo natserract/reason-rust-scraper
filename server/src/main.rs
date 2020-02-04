@@ -12,7 +12,7 @@ extern crate scraper;
 
 mod routes;
 mod pool;
-mod hooks;
+mod utils;
 mod models;
 mod database;
 mod schema;

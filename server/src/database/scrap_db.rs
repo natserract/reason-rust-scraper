@@ -13,7 +13,7 @@ use models::scrap_models::{
     NewScraps
 };
 
-use crate::hooks;
+use crate::utils;
 use chrono::Local;
 
 use crate::scrapper;
@@ -42,10 +42,10 @@ pub fn query_create_scrap_post(
         site_name,
         description,
         headers: "headers",
-        ip_address: &hooks::result_res(get_ip_address),
-        html_code: &hooks::result_res(get_body_response),
-        css_code: &hooks::result_res(get_css_response),
-        all_links: &hooks::result_res(get_all_links),
+        ip_address: &utils::result_res(get_ip_address),
+        html_code: &utils::result_res(get_body_response),
+        css_code: &utils::result_res(get_css_response),
+        all_links: &utils::result_res(get_all_links),
         images: "Images",
         created_at: created_at,
         updated_at: None,

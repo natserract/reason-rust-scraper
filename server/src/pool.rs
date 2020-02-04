@@ -14,7 +14,7 @@ use routes::{scrap_routes};
 use dotenv::dotenv;
 use std::env;
 
-use crate::hooks;
+use crate::utils;
 use crate::models;
 
 type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
@@ -45,7 +45,7 @@ pub fn onfire() -> rocket::Rocket {
             ],
         )
         .attach(enable_cors())
-        .register(catchers![hooks::error_status])
+        .register(catchers![utils::error_status])
 }
 
 pub struct Connection(pub PooledConnection<ConnectionManager<MysqlConnection>>);

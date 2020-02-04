@@ -8,3 +8,11 @@ pub fn error_status() -> JsonValue {
         "reason": "Resource was not found {}",
     })
 }
+
+type ArgsType = Result<String, reqwest::Error>;
+pub fn result_res(args: ArgsType) -> String {
+    match args {
+        Ok(result) => result,
+        Err(err) => panic!("Error! Not Found: {}", err)
+    }
+}

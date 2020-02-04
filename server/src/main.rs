@@ -8,6 +8,7 @@
 #[macro_use] extern crate diesel;
 extern crate chrono;
 extern crate reqwest;
+extern crate scraper;
 
 mod routes;
 mod pool;
@@ -15,6 +16,7 @@ mod hooks;
 mod models;
 mod database;
 mod schema;
+mod scrapper;
 
 fn main() {
    pool::onfire().launch();

@@ -4,12 +4,8 @@ open Belt;
 
 type data = {
     id: int,
-    body: string,
-    createdAt: option(Js.Date.t),
-    description: string,
-    headers: string,
+    html_code: string,
     site_name: string,
-    updatedAt: option(Js.Date.t),
 }
 
 type datas = {
@@ -31,12 +27,8 @@ module Decode = {
     let decodeData = json => 
         Json.Decode.{
             id: json |> field("id", int),
-            body:json |> field("body", string),
-            createdAt: json |> optional(field("created_at", date)),
-            description: json |> field("description", string),
-            headers: json |> field("headers", string),
+            html_code:json |> field("html_code", string),
             site_name:json |> field("site_name", string),
-            updatedAt: json |> optional(field("updated_at", date))
         };
 
     let decodeDatas = json =>
@@ -60,7 +52,7 @@ let make = () => {
 
     React.useEffect0(() => {
         Js.Promise.(
-            Fetch.fetch("http://localhost:4000/api/scraps/")
+            Fetch.fetch("http://localhost:4000/api/scraps")
             |> then_(Fetch.Response.json)
             |> then_(json => 
                 json    |> Decode.decodeDatas
@@ -88,7 +80,7 @@ let make = () => {
             | LoadedScraps(scraps) => 
                 scraps.result
                 -> Belt.Array.map(scrap => {
-                    <li key=(string_of_int(scrap.id))>{str(scrap.site_name)}</li>;
+                    <pre className="prettyprint lang-html" style={ReactDOMRe.Style.make(~width="50%", ~height="50%", ())} key=(string_of_int(scrap.id))>{str(scrap.html_code)}</pre>;
                 })
                 -> React.array             
                 

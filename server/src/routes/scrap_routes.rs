@@ -6,7 +6,8 @@ use rocket::http::Status;
 use crate::models;
 use models::scrap_models::{
     Scraps,
-    NewScraps
+    NewScraps,
+    UpdateScraps
 };
 
 use crate::database;
@@ -16,7 +17,7 @@ use database::scrap_db as action;
 pub fn view_all_scraps(connection: pool::Connection) -> JsonValue {
     let result = action::query_view_scraps_data(&connection);
     json!({
-        "result": result
+        "results": result
     })
 }
 
@@ -33,4 +34,18 @@ pub fn create_scrap_post(scrap_data: Json<NewScraps>, connection: pool::Connecti
             field_description,
         )
     )
+}
+
+
+#[post("/api/scraps/update/<id>", data = "<scrap_data>")]
+pub fn update_scrap_post(
+    id: i32,
+    scrap_data: Json<UpdateScraps>,
+    connection: pool::Connection,
+) -> String {
+    let query = action::query_update_user(id, &connection, scrap_data.into_inner());
+    match query {
+        true => format!("Issue Post has been succesfully updated"),
+        false => format!("Failed to update issue post"),
+    }
 }

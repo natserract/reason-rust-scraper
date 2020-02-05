@@ -43,3 +43,16 @@ pub struct NewScraps<'a> {
     #[serde(skip_deserializing)]
     pub updated_at: Option<NaiveDateTime>,
 }
+
+#[table_name = "scrap"]
+#[derive(Serialize, Deserialize, AsChangeset, Debug, Clone)]
+pub struct UpdateScraps {
+   pub site_name: Option<String>,
+   pub description: Option<String>,
+
+   pub ip_address: Option<String>,
+
+   #[serde(skip_deserializing)]
+   pub created_at: Option<NaiveDateTime>,
+   pub updated_at: Option<NaiveDateTime>,
+}

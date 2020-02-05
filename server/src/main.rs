@@ -19,5 +19,5 @@ mod schema;
 mod scrapper;
 
 fn main() {
-   pool::onfire().launch();
+   pool::server().launch();
 }

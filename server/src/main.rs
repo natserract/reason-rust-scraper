@@ -18,6 +18,7 @@ mod database;
 mod schema;
 mod scrapper;
 
-fn main() {
-   pool::server().launch();
+
+fn main(){
+    pool::server().launch();
 }

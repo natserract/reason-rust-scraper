@@ -20,13 +20,13 @@ pub struct Scraps {
 }
 
 #[table_name = "scrap"]
-#[derive(Serialize, Deserialize, Insertable, Queryable)]
+#[derive(Serialize, Deserialize, Debug, Insertable, Queryable)]
 pub struct NewScraps<'a> {
     pub site_name: &'a str,
     pub description: &'a str,
-    
-    #[serde(skip_deserializing)]
+
     pub headers: &'a str,
+    
     #[serde(skip_deserializing)]
     pub ip_address: &'a str,
     #[serde(skip_deserializing)]
@@ -49,8 +49,11 @@ pub struct NewScraps<'a> {
 pub struct UpdateScraps {
    pub site_name: Option<String>,
    pub description: Option<String>,
-
    pub ip_address: Option<String>,
+   pub html_code: Option<String>,
+//    pub css_code: Option<String>,
+   pub all_links: Option<String>,
+   pub images: Option<String>,
 
    #[serde(skip_deserializing)]
    pub created_at: Option<NaiveDateTime>,

@@ -1,6 +1,6 @@
 
 use crate::pool;
-use rocket_contrib::json::{Json, JsonValue};
+use rocket_contrib::json::{Json, JsonValue, JsonError};
 use rocket::http::Status;
 
 use crate::models;
@@ -40,10 +40,10 @@ pub fn create_scrap_post(scrap_data: Json<NewScraps>, connection: pool::Connecti
 #[post("/api/scraps/update/<id>", data = "<scrap_data>")]
 pub fn update_scrap_post(
     id: i32,
-    scrap_data: Json<UpdateScraps>,
+    scrap_data: Result<Json<UpdateScraps>, JsonError>,
     connection: pool::Connection,
 ) -> String {
-    let query = action::query_update_user(id, &connection, scrap_data.into_inner());
+    let query = action::query_update_user(id, &connection, scrap_data.unwrap());
     match query {
         true => format!("Issue Post has been succesfully updated"),
         false => format!("Failed to update issue post"),

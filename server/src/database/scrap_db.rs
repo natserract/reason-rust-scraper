@@ -3,6 +3,7 @@
 use diesel;
 use diesel::mysql::MysqlConnection;
 use diesel::prelude::*;
+use rocket_contrib::json::{Json, JsonValue, JsonError};
 
 use crate::schema::scrap;
 use crate::schema::scrap::dsl::scrap as all_issues;
@@ -20,6 +21,8 @@ use crate::utils;
 use chrono::Local;
 
 use crate::scrapper;
+
+type ScrapOpt = Option<String>;
 
 pub fn query_view_scraps_data(connection: &MysqlConnection) -> Vec<Scraps> {
     scrap::table
@@ -40,11 +43,12 @@ pub fn query_create_scrap_post(
     let get_ip_address = scrapper::lib::remote_addr(site_name);
     let get_all_links = scrapper::lib::grab_all_links(site_name);
     let get_all_img = scrapper::lib::grab_all_images(site_name);
+    let get_headers = scrapper::lib::headers(site_name);
 
     let new_scrap_post = &NewScraps {
         site_name,
         description,
-        headers: "headers",
+        headers: &utils::result_res(get_headers),
         ip_address: &utils::result_res(get_ip_address),
         html_code: &utils::result_res(get_body_response),
         css_code: "CSS",
@@ -69,21 +73,29 @@ pub fn query_create_scrap_post(
 pub fn query_update_user(
     id: i32,
     connection: &MysqlConnection,
-    scrap_data: UpdateScraps
+    scrap_data: Json<UpdateScraps>
 ) -> bool {
     
     let updated_at = Some(Local::now().naive_local());
 
-    //Should be cloned!
-    let site_name = scrap_data.site_name.clone();
+    //site_name moving here
+    let ip_address = scrapper::lib::remote_addr_opt(scrap_data.site_name.clone());
+    let html_code = scrapper::lib::html_opt(scrap_data.site_name.clone());
+    let all_links = scrapper::lib::grab_all_links_opt(scrap_data.site_name.clone());
+    let all_img = scrapper::lib::grab_all_images_opt(scrap_data.site_name.clone());
     
-    let ip_address = scrapper::lib::remote_addr_opt(site_name);
-    let get_ip_address_res: Option<String> = ip_address.ok();
+    let scrap_ip_address: ScrapOpt = ip_address.ok();
+    let scrap_html_code: ScrapOpt = html_code.ok();
+    let scrap_all_links: ScrapOpt = all_links.ok();
+    let scrap_all_img: ScrapOpt = all_img.ok();
 
     let data = &UpdateScraps {
         created_at: None,
         updated_at: updated_at,
-        ip_address: get_ip_address_res,
+        ip_address: scrap_ip_address,
+        html_code: scrap_html_code,
+        all_links: scrap_all_links,
+        images: scrap_all_img,
         ..scrap_data.clone() 
     };
 

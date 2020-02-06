@@ -15,7 +15,15 @@ pub mod lib {
         let request_headers = request.headers();
 
         Ok(format!("{:?}", request_headers))
+    }
 
+    #[tokio::main]
+    pub async fn headers_opt(some_url: Option<String>) -> Result<String, reqwest::Error> {
+        let check_url = some_url.unwrap();
+        let request = reqwest::get(&check_url).await?;
+        let request_headers = request.headers();
+
+        Ok(format!("{:?}", request_headers))
     }
 
 

@@ -19,7 +19,6 @@ use crate::models;
 
 type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
 
-// -> Init database pool/conn
 fn init_pool(db_url: String) -> MysqlPool {
     let connect = ConnectionManager::<MysqlConnection>::new(db_url);
     Pool::new(connect).expect("Failed to create pool!")
@@ -29,7 +28,6 @@ fn enable_cors() -> Cors {
     Cors::from_options(&Default::default()).expect("Cors can't be created")
 }
 
-// -> Launch App Routes
 pub fn server() -> rocket::Rocket {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
@@ -41,8 +39,9 @@ pub fn server() -> rocket::Rocket {
             "/",
             routes![
                 scrap_routes::view_all_scraps,
+                scrap_routes::view_scrap,
                 scrap_routes::create_scrap_post,
-                scrap_routes::update_scrap_post
+                scrap_routes::update_scrap_post,
             ],
         )
         .attach(enable_cors())
@@ -63,7 +62,6 @@ impl<'a, 'r> FromRequest<'a, 'r> for Connection {
     }
 }
 
-// For the convenience of using an &Connection as an &MysqlConnection.
 impl Deref for Connection {
     type Target = MysqlConnection;
 

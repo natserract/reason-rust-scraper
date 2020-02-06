@@ -6,11 +6,11 @@ edition = "2018"
 
 [[bin]]
 name = "index"
-path = "server/src/main.rs"
+path = "server/main.rs"
 
 [lib]
 name = "rustreason"
-path = "server/src/main.rs"
+path = "server/main.rs"
 
 [dependencies]
 reqwest = { version = "0.10", features = ["json"] }

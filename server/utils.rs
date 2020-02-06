@@ -1,6 +1,9 @@
 
 use rocket_contrib::json::{JsonValue};
 
+pub type ArgsTypeRes = Result<String, reqwest::Error>;
+pub type ArgsTypeOption = Option<String>;
+
 #[catch(404)]
 pub fn error_status() -> JsonValue {
     json!({
@@ -9,8 +12,6 @@ pub fn error_status() -> JsonValue {
     })
 }
 
-pub type ArgsTypeRes = Result<String, reqwest::Error>;
-
 pub fn result_res(args: ArgsTypeRes) -> String {
     match args {
         Ok(result) => result,
@@ -18,7 +19,6 @@ pub fn result_res(args: ArgsTypeRes) -> String {
     }
 }
 
-type ArgsTypeOption = Option<String>;
 pub fn result_opt(args: ArgsTypeRes) -> ArgsTypeOption {
     match args {
        Ok(result) => Some(result),

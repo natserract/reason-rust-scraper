@@ -21,6 +21,14 @@ pub fn view_all_scraps(connection: pool::Connection) -> JsonValue {
     })
 }
 
+#[get("/api/scrap/<scrap_id>")]
+pub fn view_scrap(scrap_id: i32, connection: pool::Connection) -> Option<JsonValue> {
+    action::query_view_scraps_data_byid(scrap_id, &connection)
+            .map(|data| json!({ 
+                "results": data
+            }))
+}
+
 #[post("/api/scraps/post", data = "<scrap_data>")]
 pub fn create_scrap_post(scrap_data: Json<NewScraps>, connection: pool::Connection) -> Json<Scraps> {
     let new_scrap_post = scrap_data.into_inner();
@@ -40,10 +48,10 @@ pub fn create_scrap_post(scrap_data: Json<NewScraps>, connection: pool::Connecti
 #[post("/api/scraps/update/<id>", data = "<scrap_data>")]
 pub fn update_scrap_post(
     id: i32,
-    scrap_data: Result<Json<UpdateScraps>, JsonError>,
+    scrap_data: Json<UpdateScraps>,
     connection: pool::Connection,
 ) -> String {
-    let query = action::query_update_user(id, &connection, scrap_data.unwrap());
+    let query = action::query_update_user(id, &connection, scrap_data.into_inner());
     match query {
         true => format!("Issue Post has been succesfully updated"),
         false => format!("Failed to update issue post"),

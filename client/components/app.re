@@ -7,7 +7,7 @@ applyToHeadEl##innerHTML #= AppStyles.globalStyles;
 
 [@react.component]
 let make = () => {
-    let route = useRoute();
+    let route = configRoutes();
 
     <Fragment>
         ( switch (route) {

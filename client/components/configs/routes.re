@@ -4,7 +4,7 @@ type routes =
   |  Home
   |  NotFound;
 
-let useRoute = () => {
+let configRoutes = () => {
     let url = ReasonReactRouter.useUrl();
     let hash = url.hash |> Js.String.split("/");
 

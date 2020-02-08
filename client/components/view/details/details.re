@@ -1,41 +1,17 @@
 
 open Utils;
-open Belt;
-
-type data = {
-    id: int,
-    html_code: string,
-    site_name: string,
-}
-
-type datas = {
-    result: array(data)
-};
+open Models;
 
 type state = 
   | LoadingScraps
   | ErrorFetchingScraps
-  | LoadedScraps(datas);
+  | LoadedScraps(client_array);
 
 type action = 
   | ScrapFetch
-  | ScrapFetched(datas)
+  | ScrapFetched(client_array)
   | ScrapFailedToFetch;
 
-
-module Decode = {
-    let decodeData = json => 
-        Json.Decode.{
-            id: json |> field("id", int),
-            html_code:json |> field("html_code", string),
-            site_name:json |> field("site_name", string),
-        };
-
-    let decodeDatas = json =>
-        Json.Decode.{
-            result: json |> field("result", array(decodeData))
-        }
-};
 
 [@react.component]
 let make = () => {
@@ -52,17 +28,11 @@ let make = () => {
 
     React.useEffect0(() => {
         Js.Promise.(
-            Fetch.fetch("http://localhost:4000/api/scraps")
-            |> then_(Fetch.Response.json)
-            |> then_(json => 
-                json    |> Decode.decodeDatas
-                        |> (scraps => dispatch(ScrapFetched(scraps)))
-                        |> resolve
-            )
+            API.fetchAll()
+            |> then_(json => json  |> scraps => dispatch(ScrapFetched(scraps)) |> resolve )
             |> catch(_err => Js.Promise.resolve(dispatch(ScrapFailedToFetch)))
             |> ignore
-        );
-
+        )
         None;
     });
 
@@ -78,9 +48,9 @@ let make = () => {
             | ErrorFetchingScraps => React.string("Error!!!!")
             | LoadingScraps => React.string("Loading...")
             | LoadedScraps(scraps) => 
-                scraps.result
+                scraps.results
                 -> Belt.Array.map(scrap => {
-                    <pre className="prettyprint lang-html" style={ReactDOMRe.Style.make(~width="50%", ~height="50%", ())} key=(string_of_int(scrap.id))>{str(scrap.html_code)}</pre>;
+                    <pre className="prettyprint lang-html" style={ReactDOMRe.Style.make(~width="50%", ~height="50%", ())} key=(string_of_int(scrap.id))>{str(scrap.site_name)}</pre>;
                 })
                 -> React.array             
                 

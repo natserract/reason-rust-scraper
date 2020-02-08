@@ -1,6 +1,6 @@
-module Make = {
-    open Formality;
+open Formality;
 
+module Make = {
     type field = 
       | SiteName
       | Description;
@@ -21,7 +21,7 @@ module Make = {
         let validator = {
             Async.{
                 field: SiteName,
-                strategy: OnFirstSuccessOrFirstBlur,
+                strategy: OnSubmit,
                 dependents: None,
                 validate: ({ site_name }) => {
                     switch site_name {
@@ -40,11 +40,11 @@ module Make = {
         let validator = {
             Async.{
                 field: Description,
-                strategy: OnFirstSuccessOrFirstBlur,
+                strategy: OnSubmit,
                 dependents: None,
                 validate: ({description}) => {
                     switch description {
-                        | "" => Error("Title is required")
+                        | "" => Error("Description is required")
                         | _ => Ok(Valid)
                     };
                 },

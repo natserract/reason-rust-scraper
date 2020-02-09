@@ -6,7 +6,6 @@ table! {
         headers -> Text,
         ip_address -> Varchar,
         html_code -> Text,
-        css_code -> Text,
         all_links -> Text,
         images -> Text,
         created_at -> Nullable<Timestamp>,

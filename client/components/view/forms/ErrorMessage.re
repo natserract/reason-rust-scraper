@@ -1,5 +1,4 @@
 
-open Utils;
 open Css;
 
 module Style = {

@@ -9,6 +9,7 @@
 extern crate chrono;
 extern crate reqwest;
 extern crate scraper;
+extern crate mime;
 
 mod routes;
 mod pool;

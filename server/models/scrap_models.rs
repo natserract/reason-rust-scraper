@@ -12,7 +12,6 @@ pub struct Scraps {
     pub headers: String,
     pub ip_address: String,
     pub html_code: String,
-    pub css_code: String,
     pub all_links: String,
     pub images: String,
     pub created_at: Option<NaiveDateTime>,
@@ -27,19 +26,15 @@ pub struct NewScraps<'a> {
 
     #[serde(skip_deserializing)]
     pub headers: &'a str,
-    
     #[serde(skip_deserializing)]
     pub ip_address: &'a str,
     #[serde(skip_deserializing)]
     pub html_code: &'a str,
     #[serde(skip_deserializing)]
-    pub css_code: &'a str,
-    #[serde(skip_deserializing)]
     pub all_links: &'a str,
     #[serde(skip_deserializing)]
     pub images: &'a str,
     #[serde(skip_deserializing)]
-
     pub created_at: Option<NaiveDateTime>,
     #[serde(skip_deserializing)]
     pub updated_at: Option<NaiveDateTime>,
@@ -53,7 +48,6 @@ pub struct UpdateScraps {
    pub headers: Option<String>,
    pub ip_address: Option<String>,
    pub html_code: Option<String>,
-//    pub css_code: Option<String>,
    pub all_links: Option<String>,
    pub images: Option<String>,
 

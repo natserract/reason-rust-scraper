@@ -2,7 +2,7 @@
 open Utils;
 open HomeStyles;
 
-module Form = HomeForm.Make;
+module Form = ValidateHomeForm.Make;
 module FormHook = Formality.Async.Make(Form);
 
 let initialState = 
@@ -10,6 +10,7 @@ let initialState =
         site_name: "", 
         description: ""
     };
+
 
 [@react.component]
 let make = () => {
@@ -35,24 +36,24 @@ let make = () => {
                         )
                     )
                     |> then_(Fetch.Response.json)
-                    |> ignore
-                );
-                
-                Js.Global.setTimeout(
-                    () => {
+                    |> then_(_ => {
                         form.notifyOnSuccess(None);
                         form.reset->Js.Global.setTimeout(3000)->ignore;
-                    },
-                    500,
-                )
-                -> ignore;
+                        resolve();
+                    })
+                    |> catch(_err => {
+                        form.notifyOnFailure(Js.log("Error"));
+                        resolve();
+                    })
+                    |> ignore
+                );
             },
         );
     
-    <Container>
-        <CenterPosition>
-        <h2 className=Styles.heading>(str("Submit Your Site"))</h2>
-            <form className=Styles.form onSubmit={form.submit->Formality.Dom.preventDefault}>
+        <Container>
+            <CenterPosition>
+                <h2 className=Styles.heading>(str("Submit Your Site"))</h2>
+                <form className=Styles.form onSubmit={form.submit->Formality.Dom.preventDefault}>
                 <div className="field-title">
                     <label>"Site Name:" -> React.string</label>
                     <input
@@ -77,7 +78,7 @@ let make = () => {
                         | Some(Ok(NoValue)) | None => React.null
                     }}
                 </div>
-
+        
                 <div className="field-description">
                     <label>"Detailed Description:" -> React.string</label>
                         <textarea
@@ -105,10 +106,12 @@ let make = () => {
                         (form.submitting ? "Submitting..." : "Submit") -> React.string
                 </button>
                 {switch (form.status) {
-                    | Submitted =>
-                    <div>
-                        {j|✓ Success|j}->React.string
-                    </div>
+                    | Submitted => 
+                        <span style=(ReactDOMRe.Style.make(
+                            ~color="#a5d2b3", 
+                            ~display="block", 
+                            ~marginTop="20px", 
+                        ()))> (str("Well done!")) </span>
                     | _ => React.null
                     }}
             </form>

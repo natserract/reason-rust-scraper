@@ -48,7 +48,6 @@ pub fn query_create_scrap_post(
         headers: &utils::result_res(scrap_headers),
         ip_address: &utils::result_res(scrap_ip_address),
         html_code: &utils::result_res(scrap_body),
-        css_code: "CSS",
         all_links: &utils::result_res(scrap_all_links),
         images: &utils::result_res(scrap_all_img),
         created_at: created_at,

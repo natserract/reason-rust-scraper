@@ -1,11 +1,21 @@
+
 use diesel::mysql::MysqlConnection;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use rocket_cors;
 
-use rocket::http::Status;
+use rocket::http::{
+    Status,
+    Method
+};
 use rocket::request::{self, FromRequest};
 use rocket::{Outcome, Request, State};
-use rocket_cors::Cors;
+use rocket_cors::{
+    AllowedHeaders,
+    AllowedOrigins,
+    Error,
+    Cors,
+    CorsOptions
+};
 use std::ops::Deref;
 
 use super::routes;
@@ -17,6 +27,8 @@ use std::env;
 use crate::utils;
 use crate::models;
 
+use mime::Mime;
+
 type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
 
 fn init_pool(db_url: String) -> MysqlPool {
@@ -24,14 +36,42 @@ fn init_pool(db_url: String) -> MysqlPool {
     Pool::new(connect).expect("Failed to create pool!")
 }
 
+
 fn enable_cors() -> Cors {
-    Cors::from_options(&Default::default()).expect("Cors can't be created")
+    // Cors::from_options(&Default::default()).expect("Cors can't be created")
+    let allowed_origins = AllowedOrigins::some_exact(&["http://localhost:8000"]);
+    
+    CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![
+            Method::Get, 
+            Method::Post,
+            Method::Put,
+            Method::Delete,
+            Method::Head,
+            Method::Options,
+        ].into_iter().map(From::from).collect(),
+        allowed_headers: AllowedHeaders::some(&[
+            "Authorization",
+            "Accept: image/*",
+            "Accept: */*",
+            "Access-Control-Allow-Origin: *",
+            "Content-Type",
+        ]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("Error when building cors")
+
 }
 
 pub fn server() -> rocket::Rocket {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
     let pool = init_pool(database_url);
+
+    
 
     rocket::ignite()
         .manage(pool)

@@ -7,8 +7,8 @@ let handleClick = (href, event) => {
 };
 
 [@react.component]
-let make = (~href, ~className="", ~children) => {
-    <a href className onClick={e=>handleClick(href, e) }>
+let make = (~href, ~className="", ~target="", ~children) => {
+    <a href className target onClick={e=>handleClick(href, e) }>
         children
     </a>
 }

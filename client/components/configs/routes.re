@@ -1,6 +1,7 @@
 
 type routes = 
   |  Details
+  |  Data
   |  Home
   |  NotFound;
 
@@ -10,6 +11,7 @@ let configRoutes = () => {
 
     switch (hash) {
       | [| "", "detail", "" |] => Details
+      | [| "", "data", "" |] => Data
       | [|""|] => Home
       | _ => NotFound
     };

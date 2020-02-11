@@ -27,15 +27,12 @@ use std::env;
 use crate::utils;
 use crate::models;
 
-use mime::Mime;
-
 type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
 
 fn init_pool(db_url: String) -> MysqlPool {
     let connect = ConnectionManager::<MysqlConnection>::new(db_url);
     Pool::new(connect).expect("Failed to create pool!")
 }
-
 
 fn enable_cors() -> Cors {
     // Cors::from_options(&Default::default()).expect("Cors can't be created")

@@ -2329,7 +2329,6 @@ dependencies = [
  "dotenv",
  "env_logger",
  "log 0.4.8",
- "mime 0.3.16",
  "reqwest",
  "rocket",
  "rocket_codegen",

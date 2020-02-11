@@ -9,7 +9,6 @@
 extern crate chrono;
 extern crate reqwest;
 extern crate scraper;
-extern crate mime;
 
 mod routes;
 mod pool;
@@ -18,8 +17,10 @@ mod models;
 mod database;
 mod schema;
 mod scrapper;
-
+mod tests;
 
 fn main(){
     pool::server().launch();
 }
+
+

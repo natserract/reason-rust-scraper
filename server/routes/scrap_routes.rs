@@ -24,9 +24,9 @@ pub fn view_all_scraps(connection: pool::Connection) -> JsonValue {
 #[get("/api/scrap/<scrap_id>")]
 pub fn view_scrap(scrap_id: i32, connection: pool::Connection) -> Option<JsonValue> {
     action::query_view_scrap(scrap_id, &connection)
-            .map(|data| json!({ 
-                "results": data
-            }))
+            .map(|data| json!( 
+                data
+            ))
 }
 
 #[post("/api/scraps/post", data = "<scrap_data>")]

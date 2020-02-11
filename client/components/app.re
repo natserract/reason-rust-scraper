@@ -12,7 +12,7 @@ let make = () => {
     <Fragment>
         <Header/>
         ( switch (route) {
-            | Details => <Details />
+            | Details(id) => <Detail id/>
             | Data => <Data/>
             | Home => <Home/>
             | _ => <NotFound/>

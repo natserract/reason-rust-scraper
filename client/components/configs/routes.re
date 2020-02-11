@@ -1,6 +1,6 @@
 
 type routes = 
-  |  Details
+  |  Details(string)
   |  Data
   |  Home
   |  NotFound;
@@ -10,7 +10,7 @@ let configRoutes = () => {
     let hash = url.hash |> Js.String.split("/");
 
     switch (hash) {
-      | [| "", "detail", "" |] => Details
+      | [| "", "detail", id |] => Details(id)
       | [| "", "data", "" |] => Data
       | [|""|] => Home
       | _ => NotFound

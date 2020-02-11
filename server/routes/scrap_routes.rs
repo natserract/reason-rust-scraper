@@ -23,7 +23,7 @@ pub fn view_all_scraps(connection: pool::Connection) -> JsonValue {
 
 #[get("/api/scrap/<scrap_id>")]
 pub fn view_scrap(scrap_id: i32, connection: pool::Connection) -> Option<JsonValue> {
-    action::query_view_scraps_data_byid(scrap_id, &connection)
+    action::query_view_scrap(scrap_id, &connection)
             .map(|data| json!({ 
                 "results": data
             }))
@@ -51,9 +51,28 @@ pub fn update_scrap_post(
     scrap_data: Json<UpdateScraps>,
     connection: pool::Connection,
 ) -> String {
-    let query = action::query_update_user(id, &connection, scrap_data.into_inner());
+    let query = action::query_update_scrap(id, &connection, scrap_data.into_inner());
     match query {
         true => format!("Issue Post has been succesfully updated"),
         false => format!("Failed to update issue post"),
+    }
+}
+
+#[delete("/api/scrap/<id>")]
+pub fn delete_scrap(id: i32, connection: pool::Connection) -> String{
+    let result = action::query_delete_scrap(id, &connection);
+    match result {
+        true => format!("Scrap has been succesfully deleted"),
+        false => format!("Failed to delete scrap"),
+    }
+}
+
+
+#[delete("/users")]
+pub fn delete_scraps(connection: pool::Connection) -> String {
+    let result = action::query_delete_scraps(&connection);
+    match result {
+        true => format!("All scraps has been succesfully deleted"),
+        false => format!("Failed to delete scraps"),
     }
 }

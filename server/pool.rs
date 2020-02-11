@@ -71,8 +71,6 @@ pub fn server() -> rocket::Rocket {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
     let pool = init_pool(database_url);
 
-    
-
     rocket::ignite()
         .manage(pool)
         .mount(
@@ -82,6 +80,8 @@ pub fn server() -> rocket::Rocket {
                 scrap_routes::view_scrap,
                 scrap_routes::create_scrap_post,
                 scrap_routes::update_scrap_post,
+                scrap_routes::delete_scrap,
+                scrap_routes::delete_scraps
             ],
         )
         .attach(enable_cors())

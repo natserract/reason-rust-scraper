@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use rocket_contrib::json::{Json, JsonError, JsonValue};
 
 use crate::schema::scrap;
-use crate::schema::scrap::dsl::scrap as all_issues;
+use crate::schema::scrap::dsl::scrap as scraps;
 
 use crate::models;
 use models::scrap_models::{NewScraps, Scraps, UpdateScraps};
@@ -22,7 +22,7 @@ pub fn query_view_scraps_data(connection: &MysqlConnection) -> Vec<Scraps> {
         .unwrap()
 }
 
-pub fn query_view_scraps_data_byid(id: i32, connection: &MysqlConnection) -> Option<Scraps> {
+pub fn query_view_scrap(id: i32, connection: &MysqlConnection) -> Option<Scraps> {
     scrap::table
         .find(id)
         .get_result(connection)
@@ -65,7 +65,7 @@ pub fn query_create_scrap_post(
         .unwrap()
 }
 
-pub fn query_update_user(id: i32, connection: &MysqlConnection, scrap_data: UpdateScraps) -> bool {
+pub fn query_update_scrap(id: i32, connection: &MysqlConnection, scrap_data: UpdateScraps) -> bool {
     let updated_at = Some(Local::now().naive_local());
     let ip_address = scrapper::lib::remote_addr_opt(scrap_data.site_name.clone());
     let html_code = scrapper::lib::html_opt(scrap_data.site_name.clone());
@@ -92,4 +92,15 @@ pub fn query_update_user(id: i32, connection: &MysqlConnection, scrap_data: Upda
         .set(data)
         .execute(connection)
         .is_ok()
+}
+
+
+pub fn query_delete_scrap(id: i32, connection: &MysqlConnection) -> bool {
+    diesel::delete(scrap::table.find(id))
+        .execute(connection)
+        .is_ok()
+}
+
+pub fn query_delete_scraps(connection: &MysqlConnection) -> bool {
+    diesel::delete(scraps).execute(connection).is_ok()
 }

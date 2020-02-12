@@ -11,31 +11,14 @@ let initialState =
         description: ""
     };
 
-
 [@react.component]
 let make = () => {
     let form = 
         FormHook.useForm(
             ~initialState,
             ~onSubmit=(state, form) => {
-                let payload = Js.Dict.empty();
-                Js.Dict.set(payload, "site_name", Js.Json.string(state.site_name));
-                Js.Dict.set(payload, "description", Js.Json.string(state.description));
-                
-                let body = Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload)));
-                let headers = Fetch.HeadersInit.make({"Content-Type": "application/json"});
-                
                 Js.Promise.(
-                    Fetch.fetchWithInit(
-                        "http://localhost:4000/api/scraps/post",
-                        Fetch.RequestInit.make(
-                            ~method_=Post,
-                            ~body,
-                            ~headers,
-                            ()
-                        )
-                    )
-                    |> then_(Fetch.Response.json)
+                    Models.API.add(state)
                     |> then_(_ => {
                         form.notifyOnSuccess(None);
                         form.reset->Js.Global.setTimeout(3000)->ignore;

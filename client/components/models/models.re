@@ -1,4 +1,4 @@
-
+module Form = ValidateHomeForm.Make;
 
 type client = {
     id: int,
@@ -24,7 +24,7 @@ module Decode = {
             headers: json |> field("description", string),
             ip_address: json |> field("ip_address", string),
             html_code: json |> field("html_code", string),
-            all_links: json |> field("html_code", string),
+            all_links: json |> field("all_links", string),
             images: json |> field("images", string)
         };
 
@@ -36,12 +36,12 @@ module Decode = {
 
 module Encode = {
     let client = field => {
-        let payload = Js.Dict.empty();
-        Js.Dict.set(payload, "id", Json.Encode.int(field.id));
-        Js.Dict.set(payload, "site_name", Json.Encode.string(field.site_name));
-        Js.Dict.set(payload, "description", Json.Encode.string(field.description)); 
-
-        payload |> Js.Json.object_ 
+        Json.Encode.(
+            object_([
+                ("site_name", string(field.site_name)),
+                ("description", string(field.description))
+            ])
+        )
     }
 };
 
@@ -67,8 +67,12 @@ module API = {
         );
     }
 
-    let add = (client) => {
-        let body = Fetch.BodyInit.make(client |> Encode.client |> Js.Json.stringify);
+    let add = (client: Form.state) => {
+        let payload = Js.Dict.empty();
+        Js.Dict.set(payload, "site_name", Js.Json.string(client.site_name));
+        Js.Dict.set(payload, "description", Js.Json.string(client.description));
+
+        let body = Fetch.BodyInit.make(payload |> Js.Json.object_ |> Js.Json.stringify);
         let headers = Fetch.HeadersInit.make({"Content-Type": "application/json"});
         let request = Fetch.RequestInit.make(~method_=Post, ~body, ~headers, ());
 
@@ -77,7 +81,6 @@ module API = {
             |> then_(Fetch.Response.json)
             |> then_((json) => json |> Decode.decodeData |> resolve)
         )
-
     } 
 
 }

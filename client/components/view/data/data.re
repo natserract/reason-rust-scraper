@@ -16,7 +16,7 @@ type action =
 let make = () => {
     let (state, dispatch) = React.useReducer(
         (_state, action) => {
-            switch  action {
+            switch action {
                 | Fetch => LoadingScraps
                 | Fetched(scraps) => LoadedScraps(scraps)
                 | FailedToFetch => ErrorFetchingScraps
@@ -34,8 +34,6 @@ let make = () => {
         )
         None;
     });
-
-    let num = string_of_int(10);
 
     <div className=Style.container>
         {

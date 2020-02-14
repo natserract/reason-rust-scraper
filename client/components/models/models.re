@@ -21,7 +21,7 @@ module Decode = {
             id: json |> field("id", int),
             site_name:json |> field("site_name", string),
             description:json |> field("description", string),
-            headers: json |> field("description", string),
+            headers: json |> field("headers", string),
             ip_address: json |> field("ip_address", string),
             html_code: json |> field("html_code", string),
             all_links: json |> field("all_links", string),

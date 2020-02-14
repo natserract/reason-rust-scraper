@@ -79,7 +79,7 @@ pub mod lib {
             for node in fragment.select(&selector) {
                 let get_response = node.value().attr("href").unwrap();
                 result.push_str(get_response);
-                result.push_str("\t ");
+                result.push_str("\n ");
             }
         }
 
@@ -100,7 +100,7 @@ pub mod lib {
             for node in fragment.select(&selector) {
                 let get_response = node.value().attr("href").unwrap();
                 result.push_str(get_response);
-                result.push_str("\t ");
+                result.push_str("\n ");
             }
         }
 
@@ -120,7 +120,7 @@ pub mod lib {
             for node in fragment.select(&selector) {
                 let get_response = node.value().attr("src").unwrap();
                 result.push_str(get_response);
-                result.push_str("\t ");
+                result.push_str("\n ");
             }
         }
 
@@ -141,7 +141,7 @@ pub mod lib {
             for node in fragment.select(&selector) {
                 let get_response = node.value().attr("src").unwrap();
                 result.push_str(get_response);
-                result.push_str("\t ");
+                result.push_str("\n ");
             }
         }
 

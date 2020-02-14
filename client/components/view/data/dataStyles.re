@@ -28,7 +28,7 @@ module Style = {
         color(`rgb(0, 0, 0)),
         fontWeight(`lighter),
         lineHeight(`em(1.22)),
-        margin2(`px(20), `px(0)),
+        margin4(`px(0), `px(0), `px(20), `px(0)),
     ]);
 
     let description = style([

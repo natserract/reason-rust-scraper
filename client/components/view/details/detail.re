@@ -36,9 +36,52 @@ let make = (~id: string=?) => {
         {
             switch state {
                 | Loading => React.string("Loading") 
-                | Loaded(scraps) => 
-                    <div>(str(scraps.description))</div>
-                
+                | Loaded(scraps) => {
+                    <div>
+                        <div className=Style.groupping>
+                            <label>(str("Site Name:"))</label>
+                            <pre>
+                                <code>(str(scraps.site_name))</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("Description:"))</label>
+                            <pre>
+                                <code>(str(scraps.description))</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("Headers:"))</label>
+                            <pre className="json-editor-blackbord">
+                                <code>(scraps.headers -> React.string)</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("IP Address:"))</label>
+                            <pre>
+                                <code>(scraps.ip_address -> React.string)</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("HTML Raw:"))</label>
+                            <pre className="prettyprint lang-html">
+                                <code>(scraps.html_code -> React.string)</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("All Links:"))</label>
+                            <pre>
+                                <code>(scraps.all_links -> React.string)</code>
+                            </pre>
+                        </div>
+                        <div className=Style.groupping>
+                            <label>(str("Images:"))</label>
+                            <pre>
+                                <code>(scraps.images -> React.string)</code>
+                            </pre>
+                        </div>
+                    </div>
+                }
             };
         }
     </div> 

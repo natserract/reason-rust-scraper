@@ -12,6 +12,7 @@ type action =
   | Fetched(Models.client_array)
   | FailedToFetch;
 
+
 [@react.component]
 let make = () => {
     let (state, dispatch) = React.useReducer(
@@ -25,7 +26,7 @@ let make = () => {
         LoadingScraps
     );
 
-    React.useEffect0(() => {
+    React.useEffect1(() => {
         Js.Promise.(
             Models.API.fetchAll()
             |> then_(json => json |> scraps => dispatch(Fetched(scraps)) |> resolve )
@@ -33,7 +34,9 @@ let make = () => {
             |> ignore
         )
         None;
-    });
+
+    }, [|LoadingScraps|]);
+
 
     <div className=Style.container>
         {
@@ -44,12 +47,12 @@ let make = () => {
                     scraps.results
                     -> Belt.Array.map(scrap => {
                         let getItemID = string_of_int(scrap.id);
-                        <div className=Style.item onClick={_ => ReasonReactRouter.push({j|/#/detail/$getItemID|j})} key=(string_of_int(scrap.id))>
-                            <h4 className=Style.title>(str(scrap.site_name))</h4>
+                        <div className=Style.item key=(string_of_int(scrap.id))>
+                            <h4 onClick={_ => ReasonReactRouter.push({j|/#/detail/$getItemID|j})} className=Style.title>(str(scrap.site_name))</h4>
                             <p className=Style.description>(str(scrap.description))</p>
                             <div className=Style.inner>
-                                <a href="/">(str("Update"))</a>
-                                <a href="/">(str("Delete"))</a>
+                                <a href={j|/#/update/$getItemID|j}>(str("Update"))</a>
+                                <a href={j|/#/delete/$getItemID|j}>(str("Delete"))</a>
                             </div>
                         </div>
                     })

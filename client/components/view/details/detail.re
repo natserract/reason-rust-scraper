@@ -11,7 +11,7 @@ type action =
   | Fetched(Models.client);
 
 [@react.component]
-let make = (~id: string=?) => {
+let make = (~id: string) => {
     let (state, dispatch) = React.useReducer(
         (_state, action) => {
             switch action {

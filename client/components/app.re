@@ -12,6 +12,8 @@ let make = () => {
     <Fragment>
         <Header/>
         ( switch (route) {
+            | Delete(id) => <Delete id/>
+            | Update(id) => <Update id/> 
             | Details(id) => <Detail id/>
             | Data => <Data/>
             | Home => <Home/>

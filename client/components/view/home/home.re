@@ -21,7 +21,7 @@ let make = () => {
                     Models.API.add(state)
                     |> then_(_ => {
                         form.notifyOnSuccess(None);
-                        form.reset->Js.Global.setTimeout(3000)->ignore;
+                        form.reset->Js.Global.setTimeout(1000)->ignore;
                         resolve();
                     })
                     |> catch(_err => {
@@ -98,6 +98,16 @@ let make = () => {
                     | _ => React.null
                     }}
             </form>
+            <span style=(ReactDOMRe.Style.make(
+                ~textAlign="center", 
+                ~display="block",
+                ~marginTop="30px",
+                ~color="#c1c1c1",
+                ()
+            ))>"Why scrapping not work?" -> str 
+            <a style=(ReactDOMRe.Style.make(
+                ~color="#c1c1c1",
+            ())) href="https://www.scrapehero.com/how-to-prevent-getting-blacklisted-while-scraping/" target="_blank">" Read this" -> str</a></span>
         </CenterPosition>
     </Container>
 }

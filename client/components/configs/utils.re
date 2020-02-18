@@ -7,3 +7,4 @@
 /* print string */
 let str: string => React.element = React.string;
 
+[@bs.module "../view/global/alert"] external alert: string => unit = "alert";

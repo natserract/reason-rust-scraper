@@ -15,7 +15,6 @@ module Style = {
         marginBottom(`rem(1.6)),
         borderRadius(`rem(0.4)),
         display(`block),
-        cursor(`pointer),
         boxShadows([
             Shadow.box(~blur=rem(0.4), `rgba(158, 164, 168, 0.3)),
             Shadow.box(~y=rem(0.4), ~blur=rem(1.4), `rgba(158, 164, 168, 0.3)),
@@ -25,10 +24,17 @@ module Style = {
 
     let title = style([
         fontSize(`rem(2.0)),
+        cursor(`pointer),
         color(`rgb(0, 0, 0)),
         fontWeight(`lighter),
         lineHeight(`em(1.22)),
         margin4(`px(0), `px(0), `px(20), `px(0)),
+
+        selector(
+            ":hover, :focus", [
+                textDecoration(`underline),
+            ]
+        )
     ]);
 
     let description = style([

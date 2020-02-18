@@ -1,5 +1,11 @@
 module Form = ValidateHomeForm.Make;
 
+
+type t = {
+    site_name: string,
+    description: string,
+}
+
 type client = {
     id: int,
     site_name: string,
@@ -15,6 +21,14 @@ type client_array = {
     results: array(client)
 };
 
+
+module Response = {
+    exception FetchError(Fetch.response);
+
+    let statusOk = (response) => 
+        Fetch.Response.ok(response) ? Js.Promise.resolve() : Js.Promise.reject(FetchError(response));
+};
+
 module Decode = {
     let decodeData = json => 
         Json.Decode.{
@@ -27,6 +41,13 @@ module Decode = {
             all_links: json |> field("all_links", string),
             images: json |> field("images", string)
         };
+
+    let decodeUpdateField = json => 
+        Json.Decode. {
+            site_name:json |> field("site_name", string),
+            description:json |> field("description", string),
+        };
+
 
     let decodeDataArray = json =>
         Json.Decode.{
@@ -59,6 +80,14 @@ module API = {
         )
     }
 
+    let fetchUpdate = (clientId) => {
+        Js.Promise.(
+            Fetch.fetch(fetchDataUrl(clientId))
+            |> then_(Fetch.Response.json)
+            |> then_(json => json |> Decode.decodeUpdateField |> resolve)
+        )
+    }
+
     let fetchAll = () => {
         Js.Promise.(
             Fetch.fetch(fetchDatasUrl)
@@ -83,4 +112,27 @@ module API = {
         )
     } 
 
+    let update = (client: Form.state) => {
+        let payload = Js.Dict.empty();
+        Js.Dict.set(payload, "site_name", Js.Json.string(client.site_name));
+        Js.Dict.set(payload, "description", Js.Json.string(client.description));
+
+        let body = Fetch.BodyInit.make(payload |> Js.Json.object_ |> Js.Json.stringify);
+        let headers = Fetch.HeadersInit.make({"Content-Type": "application/json"});
+        let request = Fetch.RequestInit.make(~method_=Put, ~body, ~headers, ());
+
+        Js.Promise.(
+            Fetch.fetchWithInit(postDataUrl, request)
+            |> then_(Fetch.Response.json)
+            |> then_((json) => json |> Decode.decodeData |> resolve)
+        )
+    } 
+
+    let remove = (clientId) => {
+        let request = Fetch.RequestInit.make(~method_=Delete, ());
+        Js.Promise.(
+            Fetch.fetchWithInit(fetchDataUrl(clientId), request)
+            |> then_(Response.statusOk)
+        )
+    }
 }

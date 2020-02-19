@@ -1,6 +1,5 @@
 module Form = ValidateHomeForm.Make;
 
-
 type t = {
     site_name: string,
     description: string,
@@ -67,7 +66,7 @@ module Encode = {
 };
 
 module API = {
-    let constantUrl:string = "http://localhost:4000/api";
+    let constantUrl = "http://localhost:4000/api";
     let fetchDatasUrl = {j|$constantUrl/scraps|j};
     let fetchDataUrl = id => {j|$constantUrl/scrap/$id|j};
     let postDataUrl = {j|$constantUrl/scraps/post|j};

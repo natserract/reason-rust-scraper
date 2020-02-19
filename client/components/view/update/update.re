@@ -45,7 +45,6 @@ let make = (~id: string) => {
                 description: scrap.description
             };
         
-        Js.log(scrap.site_name);
 
         let form = 
             FormHook.useForm(
@@ -75,7 +74,7 @@ let make = (~id: string) => {
                         <label>"Site Name:" -> React.string</label>
                         <input
                             type_="text"
-                            value={form.state.site_name}
+                            value={scrap.site_name}
                             disabled={form.submitting}
                             onBlur={_ => form.blur(SiteName)}
                             onChange={event => 
@@ -120,7 +119,7 @@ let make = (~id: string) => {
                     </div>
                     
                     <button className=Styles.button disabled={form.submitting}>
-                            (form.submitting ? "Submitting..." : "Submit") -> React.string
+                            (form.submitting ? "Updating..." : "Update") -> React.string
                     </button>
                     {switch (form.status) {
                         | Submitted => 

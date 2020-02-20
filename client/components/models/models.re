@@ -41,7 +41,7 @@ module Decode = {
             images: json |> field("images", string)
         };
 
-    let decodeUpdateField = json => 
+    let decodeUpdateData = json => 
         Json.Decode. {
             site_name:json |> field("site_name", string),
             description:json |> field("description", string),
@@ -70,6 +70,7 @@ module API = {
     let fetchDatasUrl = {j|$constantUrl/scraps|j};
     let fetchDataUrl = id => {j|$constantUrl/scrap/$id|j};
     let postDataUrl = {j|$constantUrl/scraps/post|j};
+    let updateDataUrl = id => {j|$constantUrl/scraps/update/$id|j};
     
     let fetch = (clientId) => {
         Js.Promise.(
@@ -83,7 +84,7 @@ module API = {
         Js.Promise.(
             Fetch.fetch(fetchDataUrl(clientId))
             |> then_(Fetch.Response.json)
-            |> then_(json => json |> Decode.decodeUpdateField |> resolve)
+            |> then_(json => json |> Decode.decodeUpdateData |> resolve)
         )
     }
 
@@ -111,21 +112,24 @@ module API = {
         )
     } 
 
-    let update = (client: Form.state) => {
+    let update = (id, client:t) => {
         let payload = Js.Dict.empty();
         Js.Dict.set(payload, "site_name", Js.Json.string(client.site_name));
         Js.Dict.set(payload, "description", Js.Json.string(client.description));
 
         let body = Fetch.BodyInit.make(payload |> Js.Json.object_ |> Js.Json.stringify);
-        let headers = Fetch.HeadersInit.make({"Content-Type": "application/json"});
-        let request = Fetch.RequestInit.make(~method_=Put, ~body, ~headers, ());
+        let headers = Fetch.HeadersInit.make({
+            "Content-Type": "application/json; charset=UTF-8",
+            "Accept": "application/json"
+        });
+        let request = Fetch.RequestInit.make(~method_=Post, ~body, ~headers, ());
 
         Js.Promise.(
-            Fetch.fetchWithInit(postDataUrl, request)
-            |> then_(Fetch.Response.json)
-            |> then_((json) => json |> Decode.decodeData |> resolve)
+            Fetch.fetchWithInit(updateDataUrl(id), request)
+            |> then_(Response.statusOk)
         )
     } 
+
 
     let remove = (clientId) => {
         let request = Fetch.RequestInit.make(~method_=Delete, ());

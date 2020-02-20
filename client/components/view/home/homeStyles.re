@@ -82,6 +82,7 @@ module Styles = {
         position(`relative),
         display(`inlineBlock),
         top(`rem(0.0)),
+        outline(`px(0), `none, `transparent),
 
         selector(
             ":hover, :focus", [

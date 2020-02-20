@@ -3,135 +3,110 @@
 open Utils;
 open HomeStyles;
 
-module Form = ValidateHomeForm.Make;
-module FormHook = Formality.Async.Make(Form);
+type state = {
+    result: Models.t,
+};
 
-type state = 
- | Loaded(Models.t);
+type formState = 
+    | Initial 
+    | Loading
+    | Submit
 
-type action = 
- | Fetched(Models.t);
-
+type formAction = 
+  | NotSubmitted
+  | LoadSubmit
+  | Submitted;
 
 [@react.component]
 let make = (~id: string) => {
     let (state, dispatch) = React.useReducer(
         (_state, action) => {
             switch action {
-                | Fetched(client)=> Loaded(client)
+                | NotSubmitted => Initial
+                | LoadSubmit => Loading
+                | Submitted => Submit
             };
         },
-        Loaded({
-            site_name: "",
-            description: ""
-        })
+        Initial
     );
+
+    let (value, setValue) = React.useState(() => {
+        result: {
+            site_name: "",
+            description: "",
+        }
+    });
 
     React.useEffect0(() => {
         Js.Promise.(
             Models.API.fetchUpdate(id)
-            |> then_(json => json |> client => dispatch(Fetched(client)) |> resolve )
+            |> then_(result => setValue(_ => { result: result}) |> resolve)
             |> catch(_err => Js.log("Error") |> resolve)
             |> ignore
         )
         None;
     });
+    
 
-    switch state {
-    | Loaded(scrap) => 
-        let initialState = 
-            Form.{ 
-                site_name: scrap.site_name, 
-                description: scrap.description
-            };
-        
+    let handleChange = (e) => {
+        e -> ReactEvent.Form.persist;
+        if(e -> ReactEvent.Form.target##name === "site_name") {
+            setValue(_ => {
+                result: {
+                    site_name: e -> ReactEvent.Form.target##value,
+                    description: value.result.description
+                }
+            })
+        } else if(e -> ReactEvent.Form.target##name === "description") {
+            setValue(_ => {
+                result: {
+                    site_name: value.result.site_name,
+                    description: e -> ReactEvent.Form.target##value
+                }
+            })
+        }
+    };
+    
 
-        let form = 
-            FormHook.useForm(
-                ~initialState,
-                ~onSubmit=(state, form) => {
-                    Js.Promise.(
-                        Models.API.add(state)
-                        |> then_(_ => {
-                            form.notifyOnSuccess(None);
-                            form.reset->Js.Global.setTimeout(3000)->ignore;
-                            resolve();
-                        })
-                        |> catch(_err => {
-                            form.notifyOnFailure(Js.log("Error"));
-                            resolve();
-                        })
-                        |> ignore
-                    );
-                },
-            );
- 
-            <Container>
-                <CenterPosition>
-                <h2 className=Styles.heading>(str("Update Data"))</h2>
-                <form className=Styles.form onSubmit={form.submit->Formality.Dom.preventDefault}>
-                    <div className="field-title">
-                        <label>"Site Name:" -> React.string</label>
-                        <input
-                            type_="text"
-                            value={scrap.site_name}
-                            disabled={form.submitting}
-                            onBlur={_ => form.blur(SiteName)}
-                            onChange={event => 
-                                form.change(
-                                    SiteName,
-                                    Form.SiteNameField.update(
-                                        form.state,
-                                        event -> ReactEvent.Form.target##value,
-                                    )
-                                )
-                            }
-                        />
-                        { switch (SiteName->(form.result)) {
-                            | Some(Error(err)) => <ErrorMessage>(str(err))</ErrorMessage>
-                            | Some(Ok(Valid)) => React.null
-                            | Some(Ok(NoValue)) | None => React.null
-                        }}
-                    </div>
+    let handleSubmit = (e) => {
+        e -> ReactEvent.Form.preventDefault;
+        dispatch(LoadSubmit);
+        Js.Promise.(
+            Models.API.update(id, value.result)
+            |> then_(_ => dispatch(Submitted) |> resolve)
+            |> catch(err => Js.log(err) |> resolve)
+            |> ignore
+        );
+    };
 
-                    <div className="field-description">
-                        <label>"Detailed Description:" -> React.string</label>
-                            <textarea
-                                type_="text"
-                                value={form.state.description}
-                                placeholder={scrap.description}
-                                disabled={form.submitting}
-                                onBlur={_ => form.blur(Description)}
-                                onChange={event => 
-                                    form.change(
-                                        Description,
-                                        Form.DescField.update(
-                                            form.state,
-                                            event -> ReactEvent.Form.target##value,
-                                        )
-                                    )
-                                }>{str(form.state.description)}</textarea>
-                            { switch (Description->(form.result)) {
-                                | Some(Error(err)) => <ErrorMessage>(str(err))</ErrorMessage>
-                                | Some(Ok(Valid)) => React.null
-                                | Some(Ok(NoValue)) | None => React.null
-                            }}
-                    </div>
-                    
-                    <button className=Styles.button disabled={form.submitting}>
-                            (form.submitting ? "Updating..." : "Update") -> React.string
-                    </button>
-                    {switch (form.status) {
-                        | Submitted => 
-                            <span style=(ReactDOMRe.Style.make(
-                                ~color="#a5d2b3", 
-                                ~display="block", 
-                                ~marginTop="20px", 
-                            ()))> (str("Well done!")) </span>
-                        | _ => React.null
-                        }}
-                </form>
-                </CenterPosition>
-            </Container> 
-    }
+    
+    <Container>
+        <CenterPosition>
+        <h2 className=Styles.heading>(str("Update Data"))</h2>
+
+        <form className=Styles.form onSubmit=(e => handleSubmit(e))>
+            <div className="field-title">
+                <label>"Site Name:" -> React.string</label>
+                <input required=true type_="text" name="site_name" value=value.result.site_name onChange=(e => handleChange(e))/>
+            </div>
+
+            <div className="field-description">
+                <label>"Detailed Description:" -> React.string</label>
+                <textarea required=true name="description" value=value.result.description onChange=(e => handleChange(e))></textarea>
+            </div>
+            
+            <button className=Styles.button type_="submit">
+                {
+                    switch state {
+                        | Initial => "Update" -> str
+                        | Loading => "Updating..." -> str
+                        | Submit => "Updated" -> str
+                    };
+                }
+            </button>
+        </form>
+
+        </CenterPosition>
+    </Container> 
+    
 }

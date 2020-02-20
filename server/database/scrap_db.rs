@@ -11,7 +11,7 @@ use models::scrap_models::{NewScraps, Scraps, UpdateScraps};
 use crate::utils;
 use chrono::Local;
 
-use crate::scrapper;
+use crate::lib::scrapper;
 
 type ScrapOpt = Option<String>;
 

@@ -4,8 +4,8 @@
     "react-jsx": 3
   },
   "sources": {
-    "dir" : "client/",
-    "subdirs" : true
+      "dir" : "client",
+      "subdirs" : true
   },
   "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
   "package-specs": [{
@@ -22,8 +22,9 @@
     "reason-react",
     "bs-fetch",
     "bs-css",
+    "re-formality",
     "@glennsl/bs-json",
-    "re-formality"
+    "@glennsl/bs-jest"
   ],
   "refmt": 3
 }

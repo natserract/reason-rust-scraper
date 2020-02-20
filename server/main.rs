@@ -16,7 +16,7 @@ mod utils;
 mod models;
 mod database;
 mod schema;
-mod scrapper;
+mod lib;
 mod tests;
 
 fn main(){

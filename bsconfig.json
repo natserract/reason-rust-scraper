@@ -12,6 +12,10 @@
     "module": "commonjs",
     "in-source": true
   }],
+  "warnings": {
+    "number": "-33-32-44-45-27-6",
+    "error": "+5"
+  },
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": [

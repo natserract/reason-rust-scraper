@@ -3,7 +3,7 @@ This is a code repository for implementing how to scraping and crawling websites
 
 If you have never heard of scraping, try to read this [web scraping](https://en.wikipedia.org/wiki/Web_scraping) for more information.
 
-<img src="https://github.com/alfinsuryaS/reason-rust-scraper/blob/master/screenshot.gif" alt="screenshot" width="100%"/>
+<img src="https://github.com/alfinsuryaS/reason-rust-scraper/blob/master/client/assets/img/screenshot.gif" alt="screenshot" width="100%"/>
 
 
 ## Requirements
@@ -64,3 +64,8 @@ $ npm run build
 ```bash
 $ cargo build
 ```
+
+## Contributing
+   Pull requests are welcome. For major changes, please:
+   1. Create issues and PRs - bugs, missing documentation, typos, unreadable code...
+   2. Make sure to update tests as appropriate

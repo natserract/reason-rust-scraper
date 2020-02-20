@@ -50,7 +50,6 @@ fn enable_cors() -> Cors {
         ].into_iter().map(From::from).collect(),
         allowed_headers: AllowedHeaders::some(&[
             "Authorization",
-            "Accept: image/*",
             "Accept: */*",
             "Access-Control-Allow-Origin: *",
             "Content-Type",

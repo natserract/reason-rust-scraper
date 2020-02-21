@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "scripts": {
-    "build": "bsb -make-world",
+    "build": "bsb -make-world && webpack --mode production",
     "start": "bsb -make-world -w -ws _ && bsb -clean-world",
     "server": "moduleserve ./ --port 8000",
     "test": "jest"

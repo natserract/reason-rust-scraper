@@ -10,6 +10,6 @@ module.exports = {
   devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, "build"),
-    filename: 'index.js',
+    filename: 'index.deploy.js',
   },
 };

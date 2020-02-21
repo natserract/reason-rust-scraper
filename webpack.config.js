@@ -7,8 +7,9 @@ module.exports = {
   // use webpack or any other bundler during development! Recheck README if
   // you didn't know this
   mode: 'production',
+  devtool: 'inline-source-map',
   output: {
-    path: path.join(__dirname, "bundleOutput"),
+    path: path.join(__dirname, "build"),
     filename: 'index.js',
   },
 };

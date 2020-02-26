@@ -68,7 +68,7 @@ pub fn delete_scrap(id: i32, connection: pool::Connection) -> String{
 }
 
 
-#[delete("/users")]
+#[delete("/api/scraps/delete")]
 pub fn delete_scraps(connection: pool::Connection) -> String {
     let result = action::query_delete_scraps(&connection);
     match result {
